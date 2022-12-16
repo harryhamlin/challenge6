@@ -45,7 +45,7 @@ $(function () {
 
     // this function executes multiple apis, first one to grab lat and lon of specified city, the next to pull the weather forecast. from within the second fetch, the dataParse function is executed
     function grabInfo(cityName) {
-        let geoLocate = ('http://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=8608b342c629b737fa132244a51c05e7');
+        let geoLocate = ('https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=5&appid=8608b342c629b737fa132244a51c05e7');
         fetch(geoLocate)
             .then(function (response) {
                 if (response.status !== 200) {
@@ -61,7 +61,7 @@ $(function () {
                 } else {
                     lat = data[0].lat;
                     lon = data[0].lon;
-                    forecastFetchUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=8608b342c629b737fa132244a51c05e7';
+                    forecastFetchUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=8608b342c629b737fa132244a51c05e7';
                     return fetch(forecastFetchUrl)
                 }
             })
@@ -83,7 +83,7 @@ $(function () {
                 for (let i = 0; i < 5; i++) {
                     $('#forecast').append('<div class="card m-2 col-lg col-sm-12 bg-dark text-light" id="forecast-card"><div class="card-body"><h5 class="card-title" id="date">' + forecastArray[i][0] + '</h5><i id="icon">' + forecastArray[i][1] + '</i><h6 class="card-subtitle mb-2 text-muted" id="temp">' + forecastArray[i][2] + '</h6><h6 class="card-subtitle mb-2 text-muted" id="wind">' + forecastArray[i][3] + '</h6><h6 class="card-subtitle mb-2 text-muted" id="humidity">' + forecastArray[i][4] + '</h6></div></div>')
                 }
-                let forecastFetchUrl = 'http://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=8608b342c629b737fa132244a51c05e7';
+                let forecastFetchUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=8608b342c629b737fa132244a51c05e7';
                 return fetch(forecastFetchUrl);
             })
             .then(function (response) {
