@@ -1,45 +1,39 @@
 // todo:
+// make the buttons be removed after clicking the clear  history button
 // clean up .append functions?
 
-
-
-
 $(function () {
-    let lat;
-    let lon;
-    let currentPrintArray;
-    let printArrayLength;
-    let badSearchQuery;
-    let state;
-    let name;
     buttonPrint();
 
-    // event listener for the submit button executing the funciton to utilize the api to pull weather data
+    let lat;
+    let lon;
+    let state;
+    let name;
+    let badSearchQuery;
+
+    // event listener for the submit button executing the clearEverything function which deletes all displayed data on the page, and then the funciton to utilize the api to pull weather data from openweather. preventDefault in place to prevent the default action from 'submit'
     $('#submit-button').on('click', function (event) {
+        event.preventDefault();
         let cityName = $('#city-name').val();
         if (cityName) {
-            $('#city-name').val('');
-            
             clearEverything();
-            buttonPrint();
             grabInfo(cityName);
         }
     })
 
+     // event listener for the submit button executing the clearEverything function which deletes all displayed data on the page, and then the funciton to utilize the api to pull weather data from openweather. the if statement is in place to ensure that a 'button' element was clicked and to ensure that cityName has a value
     $('#button-top').on('click', function (event) {
         let userClick = event.target.nodeName;
         let cityName = event.target.value;
         if (userClick === 'BUTTON') {
             if (cityName) {
-                $('#city-name').val('');
-                
                 clearEverything();
-                buttonPrint();
                 grabInfo(cityName);
             }
         }
     })
 
+    // event listener for the 'clear history' button which clears local
     $('#clear-button').on('click', function (event) {
         window.localStorage.clear('search-history');
         clearEverything();
@@ -103,13 +97,14 @@ $(function () {
                 let temp = data.main.temp;
                 let wind = data.wind.speed;
                 let humidity = data.main.humidity;
-                $('#current-forecast').append('<div class="card-body" id="weather-card"><h5 class="card-title" id="city-current">' + name + ', ' + state + ' ' + date + ' ' + icon + '</h5><h6 class="card-subtitle mb-2 text-muted" id="temp-current">Temp: ' + temp + '</h6><h6 class="card-subtitle mb-2 text-muted" id="wind-current">Wind: ' + wind + '</h6><h6 class="card-subtitle mb-2 text-muted" id="humidity-current">Humidity: ' + humidity + '%</h6></div>');
+                $('#current-forecast').append('<div class="card-body" id="weather-card"><h5 class="card-title" id="city-current">' + name + ', ' + state + ' ' + date + ' ' + '<img src=http://openweathermap.org/img/wn/' + icon + '@2x.png>' + '</h5><h6 class="card-subtitle mb-2 text-muted" id="temp-current">Temp: ' + temp + '</h6><h6 class="card-subtitle mb-2 text-muted" id="wind-current">Wind: ' + wind + '</h6><h6 class="card-subtitle mb-2 text-muted" id="humidity-current">Humidity: ' + humidity + '%</h6></div>');
                 storeSearch(cityName);
                 buttonPrint();
             })
     }
 
     function clearEverything() {
+        $('#city-name').val('');
         for (let i = 0; i < 5; i++) {
             $('#forecast-card').remove();
         }
@@ -140,14 +135,14 @@ $(function () {
     }
 
     function buttonPrint() {
+        let currentPrintArray = JSON.parse(localStorage.getItem("search-history"));
+        if (currentPrintArray === null) {
+            currentPrintArray = []
+        }
+        let printArrayLength = currentPrintArray.length;
         for (let i = 0; i < printArrayLength; i++) {
             $('#history-search-button').remove();
         }
-        currentPrintArray = JSON.parse(localStorage.getItem("search-history"));
-        if (currentPrintArray === null) {
-            currentPrintArray = [];
-        }
-        printArrayLength = currentPrintArray.length;
         if (currentPrintArray.length >= 10) {
             printArrayLength = 10
         }
