@@ -86,14 +86,14 @@ $(function () {
                 for (let i = 2; i < 35; i = i + 8) {
                     let date = dayjs(dayjs.unix(data.list[i].dt)).format('MMM-DD-YY');
                     let icon = data.list[i].weather[0].icon;
-                    let temp = data.list[i].main.temp;
-                    let wind = data.list[i].wind.speed;
-                    let humidity = data.list[i].main.humidity;
+                    let temp = Math.round(data.list[i].main.temp);
+                    let wind = Math.round(data.list[i].wind.speed);
+                    let humidity = Math.round(data.list[i].main.humidity);
                     let singleDayArray = [date, icon, temp, wind, humidity];
                     forecastArray.push(singleDayArray);
                 }
                 for (let i = 0; i < 5; i++) {
-                    $('#forecast').append('<div class="card m-2 col-lg col-sm-12 bg-dark text-light" id="forecast-card"><div class="card-body"><h6 class="card-title" id="date">' + forecastArray[i][0] + '</h6><img src=http://openweathermap.org/img/wn/' + forecastArray[i][1] + '@2x.png><p class="card-subtitle mb-2 text-muted" id="temp">Temp(f):' + forecastArray[i][2] + '</p><p class="card-subtitle mb-2 text-muted" id="wind">Wind:' + forecastArray[i][3] + '</p><p class="card-subtitle mb-2 text-muted" id="humidity">Humidity:' + forecastArray[i][4] + '%</p></div></div>')
+                    $('#forecast').append('<div class="card m-2 col-lg col-sm-12 bg-dark text-light" id="forecast-card"><div class="card-body"><h6 class="card-title" id="date">' + forecastArray[i][0] + '</h6><img src=http://openweathermap.org/img/wn/' + forecastArray[i][1] + '@2x.png><p class="card-subtitle mb-2 text-muted" id="temp">Temp(f): ' + forecastArray[i][2] + '°</p><p class="card-subtitle mb-2 text-muted" id="wind">Wind: ' + forecastArray[i][3] + ' mph</p><p class="card-subtitle mb-2 text-muted" id="humidity">Humidity: ' + forecastArray[i][4] + '%</p></div></div>')
                 }
                 let forecastFetchUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=8608b342c629b737fa132244a51c05e7';
                 return fetch(forecastFetchUrl);
@@ -105,10 +105,10 @@ $(function () {
             .then(function (data) {
                 let date = dayjs(dayjs.unix(data.dt)).format('MMM-DD-YY');
                 let icon = data.weather[0].icon;
-                let temp = data.main.temp;
-                let wind = data.wind.speed;
-                let humidity = data.main.humidity;
-                $('#current-forecast').append('<div class="card-body" id="weather-card"><h5 class="card-title" id="city-current">' + name + ', ' + state + ' ' + date + ' ' + '<img src=http://openweathermap.org/img/wn/' + icon + '@2x.png>' + '</h5><h6 class="card-subtitle mb-2 text-muted" id="temp-current">Temp (F): ' + temp + '</h6><h6 class="card-subtitle mb-2 text-muted" id="wind-current">Wind: ' + wind + '</h6><h6 class="card-subtitle mb-2 text-muted" id="humidity-current">Humidity: ' + humidity + '%</h6></div>');
+                let temp = Math.round(data.main.temp);
+                let wind = Math.round(data.wind.speed);
+                let humidity = Math.round(data.main.humidity);
+                $('#current-forecast').append('<div class="card-body" id="weather-card"><h5 class="card-title" id="city-current">' + name + ', ' + state + ' ' + date + ' ' + '<img src=http://openweathermap.org/img/wn/' + icon + '@2x.png>' + '</h5><h6 class="card-subtitle mb-2 text-muted" id="temp-current">Temp (f): ' + temp + '°</h6><h6 class="card-subtitle mb-2 text-muted" id="wind-current">Wind: ' + wind + ' mph</h6><h6 class="card-subtitle mb-2 text-muted" id="humidity-current">Humidity: ' + humidity + '%</h6></div>');
                 storeSearch(cityName);
                 buttonPrint();
             })
